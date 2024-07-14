@@ -1,0 +1,129 @@
+
+
+
+
+
+
+
+<form class="form-horizontal"    autocomplete="off" #createOrEditLeaveForm="ngForm" (ngSubmit)="save()">
+  <abp-modal-header [title]="'CreateLeave' | localize" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+ 
+  <div class="modal-body">
+    <div class="row">
+      <!-- {{leave | json}} -->
+     
+     
+      <div class="col-sm-6">
+        <div class="mb-3">
+          <label class="form-label"> {{ "EmployeeName" | localize }}</label>
+          <br>
+          <input
+          type="text"
+          class="form-control"
+          name="currentUser.id"
+          id="currentUser.id"         
+          minlength="2"
+          maxlength="64"
+          style="height: calc(2.75rem + 2px) !important;"
+          required 
+          [(ngModel)]="currentUser.employeeName"
+          #EmployeeNameModel="ngModel"
+          [attr.id]="currentUser.id"
+          #EmployeeNameEl
+          disabled
+        />
+        </div>
+      </div>
+     
+      <div class="col-sm-6">
+        <div class="mb-3">
+          <label class="form-label"> {{ "LeaveCategory" | localize }}</label>
+          <br>
+        
+          <p-dropdown 
+            [options]="leaveCategorys"
+            [(ngModel)]="leave.leaveCategoryId"  
+            #leaveType="ngModel"
+            optionLabel="leaveType"  
+            optionValue="id"          
+            [filter]="true"  
+            class="w-100"                   
+            filterBy="leaveType" 
+            [showClear]="true"
+            [ngModelOptions]="{standalone: true}"
+            placeholder="Select a Category"
+            >
+            </p-dropdown>
+            <!-- (ngModelChange)="onCategorySelect($event)" -->
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="mb-3">
+          <label for="icon" class="form-label"> {{ "FromDate" | localize }}</label>
+          <br>        
+        <p-calendar 
+              type="date"           
+              [(ngModel)]="leave.fromDate"
+              #fromDate="ngModel"      
+              [ngModelOptions]="{standalone: true}"       
+              [showIcon]="true" 
+              id="fromDate"            
+              name="fromDate"                         
+              inputId="icon"
+              required             
+              >
+         </p-calendar>  
+            
+         </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="mb-3">
+          <label class="form-label"> {{ "ToDate" | localize }}</label>
+          <br>
+           <p-calendar
+           type="date" 
+           [(ngModel)]="leave.toDate" 
+           #toDate="ngModel"
+           [ngModelOptions]="{standalone: true}"
+           [showIcon]="true"
+           id="toDate"
+           name="toDate"         
+           inputId="icon"
+           
+           required></p-calendar>         
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="mb-3">
+          <label class="form-label"> {{ "Reason" | localize }}</label>
+          <br>
+          <textarea rows="5" cols="30" pInputTextarea required [(ngModel)]="leave.description"
+            [ngModelOptions]="{standalone: true}" #nameModel="ngModel" #nameEl>
+         </textarea>
+
+          <abp-validation-summary [control]="nameModel" [controlEl]="nameEl"></abp-validation-summary>
+
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="mb-3 d-flex">
+          <div class="p-field-radiobutton">
+            <p-radioButton name="Short" value="0" [(ngModel)]="leavetypeday" inputId="Short"></p-radioButton>
+            <label for="Short" class="ml-2" style="margin-bottom: .1rem;">{{ "ShortLeave" | localize }}</label>
+          </div>
+          <div class="p-field-radiobutton pl-2">
+            <p-radioButton name="Half" value="2" [(ngModel)]="leavetypeday" inputId="Half"></p-radioButton>
+            <label for="Half" class="ml-2" style="margin-bottom: .1rem;">{{ "HalfLeave" | localize }}</label>
+          </div>
+          <div class="p-field-radiobutton pl-2">
+
+            <p-radioButton name="Full" value="1" [(ngModel)]="leavetypeday" inputId="Full"></p-radioButton>
+            <label for="Full" class="ml-2" style="margin-bottom: .1rem;">{{ "FullLeave" | localize }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <abp-modal-footer [cancelDisabled]="saving" [saveDisabled]="!createOrEditLeaveForm.form.valid || saving"
+    (onCancelClick)="bsModalRef.hide()"></abp-modal-footer>
+</form>

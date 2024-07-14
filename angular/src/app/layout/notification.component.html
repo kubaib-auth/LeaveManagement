@@ -1,0 +1,16 @@
+<li class="nav-item dropdown" dropdown>
+    <div class="notification-bell" (click)="toggleNotifications()">
+        <!-- <span class="bell-icon">🔔</span> -->
+        <span class="fa fa-bell dd"></span>
+        <div class="notification-count" *ngIf="notifications.length > 0">{{ notifications.length }}</div>
+        <div class="notifications" *ngIf="showNotifications">
+            
+          <ul>
+            <li></li>
+            <li *ngFor="let notification of notifications">{{ notification }}</li>
+          </ul>
+        </div>
+      </div>
+</li>
+
+  

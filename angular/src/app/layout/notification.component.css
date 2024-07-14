@@ -1,0 +1,49 @@
+.notification-bell {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+  .bell-icon {
+    font-size: 24px;
+  }
+  
+  .notification-count {
+    position: absolute;
+    top: -4px;
+    right: -6px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 0px 6px;
+    font-size: 14px;
+  }
+  
+  .notifications {
+    position: absolute;
+    top: 30px;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 375px;
+    z-index: 1000;
+  }
+  
+  .notifications ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .notifications li {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .notifications li:last-child {
+    border-bottom: none;
+  }
+  .dd{
+    padding: 12px 8px;
+  }

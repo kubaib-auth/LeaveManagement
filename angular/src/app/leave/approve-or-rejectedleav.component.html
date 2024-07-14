@@ -1,0 +1,85 @@
+
+
+
+
+
+
+
+<form class="form-horizontal"    autocomplete="off" #ApproveOrRejectedLeaveForm="ngForm">
+    <abp-modal-header [title]="'LeaveHistory' | localize" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+   
+    <div class="modal-body" *ngFor="let hero of leave">
+      <div class="row">
+       
+       
+       
+        <div class="col-sm-6">
+          <div class="mb-3">
+          <span class="fw-bold">{{ "EmployeeName" | localize }} :</span>   {{hero.employeeName}}
+          </div>
+        </div>
+       
+        <div class="col-sm-6">
+          <div class="mb-3">
+           <span class="fw-bold">{{ "LeaveCategory" | localize }} :</span>  {{hero.leaveType}}
+
+          
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="mb-3">
+          <span class="fw-bold">{{ "FromDate" | localize }} : </span>  {{hero.fromDate | date: 'dd/MM/YYYY' }}
+
+           </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <span class="fw-bold">{{ "ToDate" | localize }} :</span>  {{hero.toDate | date: 'dd/MM/YYYY' }}
+   
+          </div>
+        </div>
+       
+        <div class="col-sm-6">
+            <div class="mb-3">
+              <span class="fw-bold"> {{ "days" | localize }} :</span>    {{hero.days}}
+  
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="mb-3">
+             <span *ngIf="hero.status===0" > <span class="fw-bold">{{ "LeaveCategory" | localize }} : </span>{{"ShortLeave" | localize}} </span>
+             <span *ngIf="hero.status===2"> <span class="fw-bold">{{ "LeaveCategory" | localize }} :</span>  {{"HalfLeave" | localize}}</span>
+             <span *ngIf="hero.status===1"> <span class="fw-bold">{{ "LeaveCategory" | localize }} :</span>  {{ "FullLeave" | localize }}</span>
+
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="mb-3">
+             <span class="fw-bold">{{ "LeaveStatus" | localize }} : </span> 
+            
+               <button *ngIf="hero.isLeave===0" type="button" class="btn btn-info">Pending</button>
+               <button *ngIf="hero.isLeave===1" type="button" class="btn btn-warning">Approved</button>
+               <button *ngIf="hero.isLeave===2" type="button" class="btn btn-danger">Rejected</button>
+            </div>
+        </div>
+          <div class="col-sm-12">
+            <div class="mb-3">
+              <span class="fw-bold">{{ "Reason" | localize }} : </span>    {{hero.description}}
+  
+            </div>
+          </div>
+       
+      </div>
+      <div class="modal-footer justify-content-end">
+        <button type="submit" class="btn btn-warning" (click)="approve(hero.id)">
+            {{ "Approved" | localize }}
+          </button>
+          <button type="submit" class="btn btn-danger" (click)="rejected(hero.id)">
+            {{ "Rejected" | localize }}
+          </button>
+      </div>
+    </div>
+   
+   
+  </form>
+  

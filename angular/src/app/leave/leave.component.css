@@ -1,0 +1,106 @@
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .dropdown-content a:hover {background-color: #f1f1f1}
+  
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+  
+  .dropdown:hover .dropbtn {
+    background-color: #3e8e41;
+  }
+  ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+    text-align: left;
+    border: 1px solid #dee2e6;
+    border-width: 0 0 1px 0;
+    padding: 0.6rem 1rem !important;
+}
+.cursor{
+  cursor: pointer;
+}
+
+ .custombtn{
+  display: inline-block;
+  font-weight: 400;
+  color: #212529;
+  text-align: center;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  user-select: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  padding: .135rem .45rem !important;
+  font-size: 0.8rem !important;
+  line-height: 1.5;
+  border-radius: .25rem;
+  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+
+ }
+ .btn-warning {
+  color: #fff !important;
+}
+.customrow{
+  padding: 16px 0px;
+    background-color: #fff;
+    margin-right: 0 !important;
+    margin-left: 0!important;
+    border-bottom: 1px solid #dee2e6;
+}
+::ng-deep .p-inputswitch {
+  width: 3rem;
+  height: 1.2rem !important;
+}
+::ng-deep .p-inputswitch .p-inputswitch-slider:before {
+  background: #ffffff;
+  width: 1rem !important;
+  height: 1rem !important;
+  left: 0.25rem;
+  margin-top: -0.525rem !important;
+  border-radius: 50%;
+  transition-duration: 0.2s;
+}
+::ng-deep .p-inputtext {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 1rem;
+  color: #495057;
+  background: #ffffff;
+  padding: 0.55rem 0.55rem !important;
+  border: 1px solid #ced4da;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 6px;
+}
+.form-control {
+ 
+  height: calc(2.5rem + 2px) !important;
+ 
+}

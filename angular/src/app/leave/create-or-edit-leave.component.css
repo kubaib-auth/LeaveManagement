@@ -1,0 +1,28 @@
+.form-control {
+    height: calc(8.25rem + 2px) !important;
+}
+::ng-deep .p-dropdown {
+    display: inline-flex;
+    cursor: pointer;
+    position: relative; 
+    -webkit-user-select: none;
+    user-select: none;
+    width: 100% !important;
+    height: 45px;
+}
+::ng-deep .p-calendar {
+    position: relative;
+    display: inline-flex;
+    max-width: 100%;
+    width: 100% !important;
+    height: 45px !important;
+}
+::ng-deep textarea {
+    overflow: auto;
+    resize: vertical;
+    width: 100% !important;
+}
+::ng-deep .p-inputswitch {
+    width: 3rem;
+    height: 1.65rem !important;
+}

@@ -1,0 +1,257 @@
+<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row customrow">
+                <div class="col-6">
+                    <h1>{{ "ManageLeave" | localize }}</h1>
+                </div>
+                <div class="col-6 text-right">
+                    <a href="javascript:;" class="btn bg-blue" (click)="createUser()">
+                        <i class="fa fa-plus-square"></i>
+                        {{ "Create" | localize }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- {{userAsignLeave | json}} -->
+    <section class="content px-2">
+        <div class="container-fluid">
+          <!-- <div class="row">
+            <div class="col-12">
+              <div class="alert alert-info alert-dismissible">
+                <h6><i class="icon fa fa-info"></i> This is a sample Dashboard which doesn't show any server side data.
+                  However, you can develop your own dashboard inspired by this one and its source code.</h6>
+              </div>
+            </div>
+          </div> -->
+          <div class="row">
+            <!-- <div class="col-lg-3 col-6">
+              <div class="small-box bg-success">
+                <div class="inner">
+                  <h4>Avaialble: {{userAsignLeave.totalAvailableLeaveBalance | number: '1.1-2'}}</h4>
+                  <p>Availed: {{userAsignLeave.totalAvailedLeaveBalance | number: '1.1-2'}}</p>
+                  <p>Total Leave</p>
+                </div>
+                <div class="icon">
+                  <i class="fas fa-star"></i>
+                </div>
+                <a href="https://github.com/aspnetboilerplate/aspnetboilerplate/stargazers"
+                  class="small-box-footer"
+                  target="_blank">
+                  More info
+                  <i class="fas fa-arrow-circle-right"></i>
+                </a>
+              </div>
+            </div> -->
+            <div class="col-lg-4 col-6">
+              <div class="small-box bg-info">
+                <div class="inner">
+                  <h4>Avaialble: {{  userAsignLeaveSic | number: '1.1-2'}}</h4>
+                  <p>Availed:{{ userBaLeaveSic | number: '1.1-2'}}</p> 
+                  <!-- <h4>Avaialble: {{userAsignLeave.sickLeaveAsign | number: '1.1-2'}}</h4>
+                  <p>Availed:{{userAsignLeave.sickLeaveBalance | number: '1.1-2'}}</p> -->
+                  <!-- {{  userAsignLeaveCas | json}} -->
+                  <p>Sick</p>
+                </div>
+                <div class="icon">
+                  <i class="fas fa-users"></i>
+                </div>
+                <a href="https://github.com/aspnetboilerplate/aspnetboilerplate/graphs/contributors"
+                  class="small-box-footer"
+                  target="_blank">
+                  More info
+                  <i class="fas fa-arrow-circle-right"></i>
+                </a>
+              </div>
+            </div>
+            <div class="col-lg-4 col-6">
+              <div class="small-box bg-warning">
+                <div class="inner">
+                  <h4>Avaialble: {{  userAsignLeaveCas | number: '1.1-2'}}</h4>
+                  <p>Availed:{{ userBaLeaveCas | number: '1.1-2'}}</p> 
+<!--                   
+                  <h4>Avaialble: {{userAsignLeave.casualLeaveAsign | number: '1.1-2'}}</h4>
+                  <p>Availed:{{userAsignLeave.casualLeaveBalance | number: '1.1-2'}}</p> -->
+                  <p>Casual</p>
+                </div>
+                <div class="icon">
+                  <i class="fas fa-tools"></i>
+                </div>
+                <a href="https://github.com/aspnetboilerplate/aspnetboilerplate/network/dependents"
+                  class="small-box-footer"
+                  target="_blank">
+                  More info
+                  <i class="fas fa-arrow-circle-right"></i>
+                </a>
+              </div>
+            </div>
+            <!-- {{alleave | json}} -->
+            <div class="col-lg-4 col-6">
+              <div class="small-box bg-primary">
+                <div class="inner">
+                  <!-- <h4>Avaialble: {{userAsignLeave.annualLeaveAsign | number: '1.1-2'}}</h4>
+                  <p>Availed:{{userAsignLeave.annualLeaveBalance | number: '1.1-2'}}</p> -->
+                  <h4>Avaialble: {{  userAsignLeaveAnn | number: '1.1-2'}}</h4>
+                  <p>Availed:{{ userBaLeaveAnn | number: '1.1-2'}}</p> 
+               
+                  <p>Annual</p>
+                </div>
+                <div class="icon">
+                  <i class="fas fa-code"></i>
+                </div>
+                <a href="https://github.com/aspnetboilerplate/aspnetboilerplate/network/members"
+                  class="small-box-footer"
+                  target="_blank">
+                  More info
+                  <i class="fas fa-arrow-circle-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          </div>
+          </section>
+          <section class="content-header px-2">
+            <div class="container-fluid">
+            <div class="row py-0">
+                <div class="col-3 float-end d-flex ">
+                </div>
+                <div class="col-3 float-end d-flex">
+                </div>
+                <div class="col-3 float-end d-flex">
+                </div>
+                <div class="col-3 float-end d-flex" *ngIf="isGranted('Pages.AllLeaves')">
+                    <span class="">  {{ "OwnLeave" | localize }}  </span>     <p class="mb-0">  <p-inputSwitch [(ngModel)]="checked1"></p-inputSwitch> </p> <span >{{ "Allleave" | localize }}</span>
+                </div>
+               
+            </div>
+              <div class="row py-2">
+                <div class="col-lg-6 col-6">
+                  <label class="form-label">Search</label>
+
+                  <div class="my-0">
+                    <!-- (ngModelChange)="getLeaveAll()"  -->
+                    <div class="input-group mb-3">
+                        <input 
+                        [(ngModel)]="filterText" 
+                       
+                            name="filterText"
+                            autoFocus
+                             type="text"
+                              class="form-control"
+                               [placeholder]="l('SearchWithThreeDot')" 
+                               />
+                        <button class="btn btn-primary" type="submit" (click)="getLeaveAll()">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                </div>
+                <div class="col-lg-6 col-6" *ngIf="isGranted('Pages.AllLeaves')">
+                  <label class="form-label">Employee</label>
+                 
+                  <p-dropdown                                      
+                  [options]="employeeOptions"   
+                  [(ngModel)]="leaveFiterId"
+                  [ngModelOptions]="{standalone: true}"
+                  optionValue="id"
+                  optionLabel="employeeName"
+                  placeholder="Select Employee"
+                  (ngModelChange)="getLeaveAll()"
+                  [showClear]="true"
+                  class="p-fluid"
+                  [filter]="true"
+                  filterBy="employeeName"
+                  ></p-dropdown>
+                </div>
+                <!--  -->
+              </div>
+          </div>
+         </section>
+       
+    <!-- {{alleave | json}} -->
+    <!-- (onLazyLoad)="getProductAll($event)"  -->
+    <section class="content px-2">
+        <div class="container-fluid">
+        <div class="card">
+            <p-table 
+            
+            [value]="alleave"
+            [lazy]="true"  
+            
+            selectionMode="single"
+            dataKey="name"
+            [paginator]="true"
+            [rows]="10" 
+            sortMode="single" 
+            [pageLinks]="5"
+            [rowsPerPageOptions]="[10,20,30,40,50]"
+            [totalRecords]="[50]"
+            [loading]="loading"> 
+            <ng-template pTemplate="header"> 
+                <tr> 
+                   
+                    <th style="width:17%">Employee Name</th> 
+                    <th style="width:12%">Leave Type</th> 
+                    <th style="width:12%">From Date</th> 
+                    <th style="width:12%">To Date</th>
+                    <th style="width:7%">Days</th>
+                    <th style="width:10%">Balance</th>
+                    <!-- <th style="width:12%">Description</th> -->
+                    <th style="width:15%">Status</th>
+                    <th style="width:15%">{{ "Actions" | localize }}</th>
+                </tr> 
+            </ng-template> 
+          
+            <ng-template pTemplate="body" let-leave> 
+                <tr> 
+                    
+                    <td>{{ leave.employeeName }}</td> 
+                    <td>{{ leave.leaveType }}</td> 
+                    <td>{{ leave.product.fromDate | date: 'dd/MM/YYYY' }}</td> 
+                    <td>{{ leave.product.toDate | date: 'dd/MM/YYYY'}}</td> 
+                    <td>{{ leave.product.days | number: '1.0-0'}}</td> 
+                    <td>{{ leave.product.leaveBalance | number: '1.1-2'}}</td> 
+                    <!-- <td>{{ leave.product.description }}</td> -->
+                    <td >
+                        <button type="button" style="padding: .135rem .45rem !important;font-size: 0.8rem !important;" class="btn btn-info " *ngIf="leave.product.isLeave===0">Pending  </button>
+                        <button  type="button" style="padding: .135rem .45rem !important;font-size: 0.8rem !important;" class="btn btn-warning " *ngIf="leave.product.isLeave===1">{{ "Approved" | localize }}  </button>
+                        <button type="button" style="padding: .135rem .45rem !important;font-size: 0.8rem !important;" class="btn btn-danger " *ngIf="leave.product.isLeave===2">{{ "Rejected" | localize }}    </button>
+                    </td>
+                    <td>
+                         <div class="btn-group">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                              Action
+                            </button>
+                            <ul class="dropdown-menu">
+                              <li *ngIf="leave.product.isLeave===0" >
+                                <a class="dropdown-item cursor" (click)="createUser(leave.product.id)" >
+                                    <i class="fas fa-pencil-alt"></i>
+                                    {{ "Edit" | localize }}
+                                </a>
+                            </li>
+                              <li>
+                                   <a class="dropdown-item" href="#">
+                                       <i class=" fas fa-trash"></i>
+                                       {{ "Delete" | localize }}
+                                   </a>
+                              </li>                          
+                            <li>
+                                <!--  -->
+                                <a *ngIf="isGranted('Pages.LeaveApprover')"  class="dropdown-item cursor" (click)="leaveApproval(leave.product.id)" >
+                                    <i class="fas fa-lock"></i>
+                                     {{ "View" | localize }}
+                                </a>
+                            </li>
+                            </ul>
+                          </div>                         
+                    </td>                   
+                </tr> 
+            </ng-template> 
+        </p-table>
+        </div>
+        </div>
+    </section>
+
+</div>
