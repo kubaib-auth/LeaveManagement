@@ -798,6 +798,76 @@ export class LeaveAppServicesServiceProxy {
 }
 
 @Injectable()
+export class NotificationAppServicesServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @return Success
+     */
+    getUserNotifications(): Observable<UserNotificationDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/NotificationAppServices/GetUserNotifications";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetUserNotifications(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetUserNotifications(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<UserNotificationDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<UserNotificationDto[]>;
+        }));
+    }
+
+    protected processGetUserNotifications(response: HttpResponseBase): Observable<UserNotificationDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(UserNotificationDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class RoleServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -3861,6 +3931,14 @@ export interface ILeaveQuotaDto {
     totalLeave: number;
 }
 
+export enum NotificationSeverity {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
+    _4 = 4,
+}
+
 export class PermissionDto implements IPermissionDto {
     id: number;
     name: string | undefined;
@@ -4716,6 +4794,89 @@ export interface ITenantLoginInfoDto {
     name: string | undefined;
 }
 
+export class TenantNotificationInfo implements ITenantNotificationInfo {
+    id: string;
+    creationTime: moment.Moment;
+    creatorUserId: number | undefined;
+    tenantId: number | undefined;
+    notificationName: string;
+    data: string | undefined;
+    dataTypeName: string | undefined;
+    entityTypeName: string | undefined;
+    entityTypeAssemblyQualifiedName: string | undefined;
+    entityId: string | undefined;
+    severity: NotificationSeverity;
+
+    constructor(data?: ITenantNotificationInfo) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.creationTime = _data["creationTime"] ? moment(_data["creationTime"].toString()) : <any>undefined;
+            this.creatorUserId = _data["creatorUserId"];
+            this.tenantId = _data["tenantId"];
+            this.notificationName = _data["notificationName"];
+            this.data = _data["data"];
+            this.dataTypeName = _data["dataTypeName"];
+            this.entityTypeName = _data["entityTypeName"];
+            this.entityTypeAssemblyQualifiedName = _data["entityTypeAssemblyQualifiedName"];
+            this.entityId = _data["entityId"];
+            this.severity = _data["severity"];
+        }
+    }
+
+    static fromJS(data: any): TenantNotificationInfo {
+        data = typeof data === 'object' ? data : {};
+        let result = new TenantNotificationInfo();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
+        data["creatorUserId"] = this.creatorUserId;
+        data["tenantId"] = this.tenantId;
+        data["notificationName"] = this.notificationName;
+        data["data"] = this.data;
+        data["dataTypeName"] = this.dataTypeName;
+        data["entityTypeName"] = this.entityTypeName;
+        data["entityTypeAssemblyQualifiedName"] = this.entityTypeAssemblyQualifiedName;
+        data["entityId"] = this.entityId;
+        data["severity"] = this.severity;
+        return data;
+    }
+
+    clone(): TenantNotificationInfo {
+        const json = this.toJSON();
+        let result = new TenantNotificationInfo();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ITenantNotificationInfo {
+    id: string;
+    creationTime: moment.Moment;
+    creatorUserId: number | undefined;
+    tenantId: number | undefined;
+    notificationName: string;
+    data: string | undefined;
+    dataTypeName: string | undefined;
+    entityTypeName: string | undefined;
+    entityTypeAssemblyQualifiedName: string | undefined;
+    entityId: string | undefined;
+    severity: NotificationSeverity;
+}
+
 export class User implements IUser {
     id: number;
     creationTime: moment.Moment;
@@ -5320,6 +5481,153 @@ export interface IUserLoginInfoDto {
     surname: string | undefined;
     userName: string | undefined;
     emailAddress: string | undefined;
+}
+
+export class UserNotificationDto implements IUserNotificationDto {
+    id: string;
+    tenantId: number | undefined;
+    userId: number;
+    state: UserNotificationState;
+    userNotification: UserNotificationInfo;
+    notification: TenantNotificationInfo;
+
+    constructor(data?: IUserNotificationDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.tenantId = _data["tenantId"];
+            this.userId = _data["userId"];
+            this.state = _data["state"];
+            this.userNotification = _data["userNotification"] ? UserNotificationInfo.fromJS(_data["userNotification"]) : <any>undefined;
+            this.notification = _data["notification"] ? TenantNotificationInfo.fromJS(_data["notification"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): UserNotificationDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserNotificationDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tenantId"] = this.tenantId;
+        data["userId"] = this.userId;
+        data["state"] = this.state;
+        data["userNotification"] = this.userNotification ? this.userNotification.toJSON() : <any>undefined;
+        data["notification"] = this.notification ? this.notification.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): UserNotificationDto {
+        const json = this.toJSON();
+        let result = new UserNotificationDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUserNotificationDto {
+    id: string;
+    tenantId: number | undefined;
+    userId: number;
+    state: UserNotificationState;
+    userNotification: UserNotificationInfo;
+    notification: TenantNotificationInfo;
+}
+
+export class UserNotificationInfo implements IUserNotificationInfo {
+    id: string;
+    tenantId: number | undefined;
+    userId: number;
+    tenantNotificationId: string;
+    state: UserNotificationState;
+    creationTime: moment.Moment;
+    targetNotifiers: string | undefined;
+    readonly targetNotifiersList: string[] | undefined;
+
+    constructor(data?: IUserNotificationInfo) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.tenantId = _data["tenantId"];
+            this.userId = _data["userId"];
+            this.tenantNotificationId = _data["tenantNotificationId"];
+            this.state = _data["state"];
+            this.creationTime = _data["creationTime"] ? moment(_data["creationTime"].toString()) : <any>undefined;
+            this.targetNotifiers = _data["targetNotifiers"];
+            if (Array.isArray(_data["targetNotifiersList"])) {
+                (<any>this).targetNotifiersList = [] as any;
+                for (let item of _data["targetNotifiersList"])
+                    (<any>this).targetNotifiersList.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): UserNotificationInfo {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserNotificationInfo();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tenantId"] = this.tenantId;
+        data["userId"] = this.userId;
+        data["tenantNotificationId"] = this.tenantNotificationId;
+        data["state"] = this.state;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
+        data["targetNotifiers"] = this.targetNotifiers;
+        if (Array.isArray(this.targetNotifiersList)) {
+            data["targetNotifiersList"] = [];
+            for (let item of this.targetNotifiersList)
+                data["targetNotifiersList"].push(item);
+        }
+        return data;
+    }
+
+    clone(): UserNotificationInfo {
+        const json = this.toJSON();
+        let result = new UserNotificationInfo();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUserNotificationInfo {
+    id: string;
+    tenantId: number | undefined;
+    userId: number;
+    tenantNotificationId: string;
+    state: UserNotificationState;
+    creationTime: moment.Moment;
+    targetNotifiers: string | undefined;
+    targetNotifiersList: string[] | undefined;
+}
+
+export enum UserNotificationState {
+    _0 = 0,
+    _1 = 1,
 }
 
 export class UserPermissionSetting implements IUserPermissionSetting {
