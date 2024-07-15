@@ -9,8 +9,10 @@ import { NotificationAppServicesServiceProxy, UserNotificationDto } from '@share
   styleUrls: ['./notification.component.css']
 })
 export class NotificationComponent extends AppComponentBase  implements OnInit{
-
-
+  notifications: string[] = ['Notification 1', 'Notification 2', 'Notification 3'];
+  showNotifications: boolean = false;
+  notification : UserNotificationDto[];
+  ShowThreeNotify: any[] = [];
   constructor(
     injector: Injector,      
     private _notificationService:NotificationAppServicesServiceProxy
@@ -20,9 +22,7 @@ export class NotificationComponent extends AppComponentBase  implements OnInit{
   ngOnInit(): void {
     this.getAllNotifications();
   }
-  notifications: string[] = ['Notification 1', 'Notification 2', 'Notification 3'];
-  showNotifications: boolean = false;
-  notification : UserNotificationDto[];
+ 
 
 
   toggleNotifications() {
@@ -31,8 +31,9 @@ export class NotificationComponent extends AppComponentBase  implements OnInit{
 
   getAllNotifications(){
     this._notificationService.getUserNotifications().subscribe(response=>{
-        this.notification = response;
-        console.log("Notification " , this.notification)
+      
+        this.notification = response;   
+        this.ShowThreeNotify=this.notification.slice(0,3);    
     })
   }
 }

@@ -11,6 +11,7 @@ import { ChangePasswordComponent } from './users/change-password/change-password
 import { LeaveComponent } from './leave/leave.component';
 import { CreateOrEditLeaveComponent } from './leave/create-or-edit-leave.component';
 import { UserDashboardComponent } from './leave/user-dashboard.component';
+import { ViewNotificationComponent } from './layout/view-notification.component';
 
 @NgModule({
     imports: [
@@ -28,8 +29,10 @@ import { UserDashboardComponent } from './leave/user-dashboard.component';
                     { path: 'about', component: AboutComponent, canActivate: [AppRouteGuard] },
                     { path: 'update-password', component: ChangePasswordComponent, canActivate: [AppRouteGuard] },
                     { path: 'leave', component: LeaveComponent, canActivate: [AppRouteGuard] },
-                    { path: 'createOrEditleave', component: CreateOrEditLeaveComponent, canActivate: [AppRouteGuard] }
-                                ]
+                    { path: 'createOrEditleave', component: CreateOrEditLeaveComponent, canActivate: [AppRouteGuard] },
+                    { path: 'view-notification', component: ViewNotificationComponent, canActivate: [AppRouteGuard] }
+        
+                ]
             }
         ])
     ],

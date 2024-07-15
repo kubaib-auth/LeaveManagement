@@ -5490,6 +5490,8 @@ export class UserNotificationDto implements IUserNotificationDto {
     state: UserNotificationState;
     userNotification: UserNotificationInfo;
     notification: TenantNotificationInfo;
+    notificationMessage: string | undefined;
+    notificationCount: number | undefined;
 
     constructor(data?: IUserNotificationDto) {
         if (data) {
@@ -5508,6 +5510,8 @@ export class UserNotificationDto implements IUserNotificationDto {
             this.state = _data["state"];
             this.userNotification = _data["userNotification"] ? UserNotificationInfo.fromJS(_data["userNotification"]) : <any>undefined;
             this.notification = _data["notification"] ? TenantNotificationInfo.fromJS(_data["notification"]) : <any>undefined;
+            this.notificationMessage = _data["notificationMessage"];
+            this.notificationCount = _data["notificationCount"];
         }
     }
 
@@ -5526,6 +5530,8 @@ export class UserNotificationDto implements IUserNotificationDto {
         data["state"] = this.state;
         data["userNotification"] = this.userNotification ? this.userNotification.toJSON() : <any>undefined;
         data["notification"] = this.notification ? this.notification.toJSON() : <any>undefined;
+        data["notificationMessage"] = this.notificationMessage;
+        data["notificationCount"] = this.notificationCount;
         return data;
     }
 
@@ -5544,6 +5550,8 @@ export interface IUserNotificationDto {
     state: UserNotificationState;
     userNotification: UserNotificationInfo;
     notification: TenantNotificationInfo;
+    notificationMessage: string | undefined;
+    notificationCount: number | undefined;
 }
 
 export class UserNotificationInfo implements IUserNotificationInfo {

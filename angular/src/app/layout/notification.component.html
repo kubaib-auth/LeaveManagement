@@ -1,16 +1,40 @@
+
 <li class="nav-item dropdown" dropdown>
     <div class="notification-bell" (click)="toggleNotifications()">
         <!-- <span class="bell-icon">🔔</span> -->
         <span class="fa fa-bell dd"></span>
-        <div class="notification-count" *ngIf="notifications.length > 0">{{ notifications.length }}</div>
+        <div class="notification-count" *ngIf="notification.length > 0">{{ notification.length }}</div>
         <div class="notifications" *ngIf="showNotifications">
-            
-          <ul>
-            <li></li>
-            <li *ngFor="let notification of notifications">{{ notification }}</li>
-          </ul>
+            <div class="row border-bottom customrownotification">
+              <div class="col-sm-6 my-4 pl-3">
+                   Notification
+              </div>
+              <div class="col-sm-6 my-4 text-end text-right pr-3" *ngIf="notification.length > 0">
+                {{ notification.length }}
+              </div>
+            </div>
+          <div class="row my-3 border-bottom customrownotification" *ngFor="let notifiy of ShowThreeNotify" >
+             <div class="col-sm-2">
+              <i class="fa fa-eye dd" aria-hidden="true"></i>
+             </div>
+             <div class="col-sm-10">
+                  <a routerLink="/app/view-notification"> {{ notifiy.notificationMessage }}</a>  
+             </div>
+             <div class="col-sm-2">
+
+             </div>
+
+          </div>
+          <div class="row  customrownotification">
+            <div class="col-sm-6 my-3 pl-3">
+                 <button type="submit" class="btn btn-primary">  See All Notification</button>
+            </div>
+            <div class="col-sm-6 my-3 text-end text-right pr-3" >
+              <button type="submit" class="btn btn-primary">  See All Notification</button>
+            </div>
+          </div>
+         
         </div>
       </div>
 </li>
 
-  

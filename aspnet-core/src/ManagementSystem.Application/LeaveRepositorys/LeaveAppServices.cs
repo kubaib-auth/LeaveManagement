@@ -168,7 +168,7 @@ namespace ManagementSystem.LeaveRepositorys
                 LeaveBalance = 0,
                 //  Days= days.ToString(),
             };
-            var message = "Test";
+            var message = "Khubaib";
             await _leaveRepository.InsertAsync(leaveda);
             var defaultTenantAdmin = new UserIdentifier(1, 2);
             await _notificationPublisher.PublishAsync(

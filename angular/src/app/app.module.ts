@@ -64,6 +64,7 @@ import { PermissionModelComponent } from './users/permission-model.component';
 import { NotificationComponent } from './layout/notification.component';
 import { UserDashboardComponent } from './leave/user-dashboard.component';
 import { ChartModule } from 'primeng/chart';
+import { ViewNotificationComponent } from './layout/view-notification.component';
 
 
 @NgModule({
@@ -100,7 +101,8 @@ import { ChartModule } from 'primeng/chart';
         ApproveOrRejectedleavComponent,
         PermissionModelComponent,
         NotificationComponent,
-        UserDashboardComponent 
+        UserDashboardComponent,
+        ViewNotificationComponent
     ],
     imports: [
         CommonModule,

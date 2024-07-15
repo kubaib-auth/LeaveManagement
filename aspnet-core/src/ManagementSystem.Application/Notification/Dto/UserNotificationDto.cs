@@ -15,5 +15,8 @@ namespace ManagementSystem.Notification.Dto
         public UserNotificationState State { get; set; }
         public UserNotificationInfo UserNotification { get; set; }
         public TenantNotificationInfo Notification { get; set; }
+        public string NotificationMessage { get; set; }
+        public int? NotificationCount { get; set; }
+
     }
 }
