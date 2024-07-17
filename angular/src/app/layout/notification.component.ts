@@ -36,4 +36,10 @@ export class NotificationComponent extends AppComponentBase  implements OnInit{
         this.ShowThreeNotify=this.notification.slice(0,3);    
     })
   }
+  view(id:string){
+      this._notificationService.viewNotification(id).subscribe(x=>{
+           
+      });
+      
+  }
 }

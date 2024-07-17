@@ -15,7 +15,7 @@
             </div>
           <div class="row my-3 border-bottom customrownotification" *ngFor="let notifiy of ShowThreeNotify" >
              <div class="col-sm-2">
-              <i class="fa fa-eye dd" aria-hidden="true"></i>
+              <i class="fa fa-eye dd" aria-hidden="true" (click)="view(notifiy.id)"></i>
              </div>
              <div class="col-sm-10">
                   <a routerLink="/app/view-notification"> {{ notifiy.notificationMessage }}</a>  

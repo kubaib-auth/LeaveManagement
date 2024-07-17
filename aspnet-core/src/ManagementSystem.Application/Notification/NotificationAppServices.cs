@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Abp.Application.Services.Dto;
 
 namespace ManagementSystem.Notification
 {
@@ -15,13 +16,16 @@ namespace ManagementSystem.Notification
     {
         private readonly IAbpSession _abpSession;
         private readonly INotificationStore _notificationStore;
+        private readonly IUserNotificationManager _userNotificationManager;
 
         public NotificationAppServices(
                IAbpSession abpSession,
-               INotificationStore notificationStore)
+               INotificationStore notificationStore,
+               IUserNotificationManager userNotificationManager)
         {
             _abpSession = abpSession;
             _notificationStore = notificationStore;
+            _userNotificationManager = userNotificationManager;
         }
 
         public async Task<List<UserNotificationDto>> GetUserNotifications()
@@ -36,9 +40,11 @@ namespace ManagementSystem.Notification
 
             var userIdentifier = new UserIdentifier(AbpSession.TenantId, userId.Value);
             var userNotifications =  _notificationStore.GetUserNotificationsWithNotifications(userIdentifier);
-            var totalCount = userNotifications.Count();
+            var filteredNotifications = userNotifications.Where(n => n.UserNotification.State == 0).ToList(); 
 
-            var result = userNotifications.Select(userNotification => new UserNotificationDto
+            var totalCount = filteredNotifications.Count();
+
+            var result = filteredNotifications.Select(userNotification => new UserNotificationDto
             {
                 Id = userNotification.UserNotification.Id,
                 TenantId = userNotification.UserNotification.TenantId,
@@ -53,6 +59,35 @@ namespace ManagementSystem.Notification
 
             return result;
         }
+        public async Task<List<UserNotificationDto>> GetAllUserNotifications()
+        {
+            var userIdentifier = new UserIdentifier(AbpSession.TenantId,AbpSession.UserId.Value);
+            var userNotifications = _notificationStore.GetUserNotificationsWithNotifications(userIdentifier);
+            var result = userNotifications.Select(userNotification => new UserNotificationDto
+            {
+                Id = userNotification.UserNotification.Id,
+                TenantId = userNotification.UserNotification.TenantId,
+                UserId = userNotification.UserNotification.UserId,
+                State = userNotification.UserNotification.State,
+                NotificationMessage = ExtractMessage(userNotification.Notification.Data)
+
+            }).ToList();
+            return result;
+        }
+        public async Task ViewNotification(Guid userNotificationId)
+        {             
+             _notificationStore.UpdateUserNotificationState(AbpSession.TenantId, userNotificationId, UserNotificationState.Read);
+        }
+        public async Task Delete(Guid userNotificationId)
+        {
+            _notificationStore.DeleteUserNotification(AbpSession.TenantId, userNotificationId);
+
+        }
+        //public async Task Delete(Guid userNotificationId)
+        //{
+        //    _notificationStore.DeleteAllUserNotifications(AbpSession.TenantId, userNotificationId);
+
+        //}
         private string ExtractMessage(object data)
         {
             if (data is Dictionary<string, object> dataDict)
@@ -71,7 +106,7 @@ namespace ManagementSystem.Notification
                 }
             }
 
-            return string.Empty; // or handle the case when the message is not found or is not a string
+            return string.Empty; 
         }
     }
 }

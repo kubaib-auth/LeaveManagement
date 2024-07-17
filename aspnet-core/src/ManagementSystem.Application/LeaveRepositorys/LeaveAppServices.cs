@@ -101,7 +101,7 @@ namespace ManagementSystem.LeaveRepositorys
 
             var totalCount = await filteredLeaves.CountAsync();
             var dbList = await leaveDetails.ToListAsync();
-            var singleUserId = input.LeaveFiterId ?? currentUserId; 
+            var singleUserId = input.LeaveFiterId ?? currentUserId;
             var userDbList = dbList.Where(o => o.UserId == singleUserId).ToList();
             var userLeaveBalance = await GetBalance((int)singleUserId);
 
@@ -124,10 +124,10 @@ namespace ManagementSystem.LeaveRepositorys
                 LeaveType = o.LeaveType,
                 CasualLeaveBalance = userLeaveBalance.CasualLeaveBalance,
                 AnnualLeaveBalance = userLeaveBalance.AnnualLeaveBalance,
-                SickLeaveBalance= userLeaveBalance.SickLeaveBalance,
-                CasualLeaveAsign= userLeaveBalance.CasualLeaveAsign,
+                SickLeaveBalance = userLeaveBalance.SickLeaveBalance,
+                CasualLeaveAsign = userLeaveBalance.CasualLeaveAsign,
 
-                AnnualLeaveAsign= userLeaveBalance.AnnualLeaveAsign,
+                AnnualLeaveAsign = userLeaveBalance.AnnualLeaveAsign,
                 SickLeaveAsign = userLeaveBalance.SickLeaveAsign
                 ,
 
@@ -168,7 +168,7 @@ namespace ManagementSystem.LeaveRepositorys
                 LeaveBalance = 0,
                 //  Days= days.ToString(),
             };
-            var message = "Khubaib";
+            var message = "Khubaib Applied Leave Notification";
             await _leaveRepository.InsertAsync(leaveda);
             var defaultTenantAdmin = new UserIdentifier(1, 2);
             await _notificationPublisher.PublishAsync(
@@ -292,10 +292,10 @@ namespace ManagementSystem.LeaveRepositorys
         public async Task<EmployeeDto> GetCurrentUser()
         {
             var userId = _abpSession.UserId;
-            var user = await _userManager.Users.Where(x => x.Id == userId).Select(x => new EmployeeDto 
-            { 
-                Id = x.Id, 
-                EmployeeName = x.UserName 
+            var user = await _userManager.Users.Where(x => x.Id == userId).Select(x => new EmployeeDto
+            {
+                Id = x.Id,
+                EmployeeName = x.UserName
             }).FirstOrDefaultAsync();
             return user;
         }
@@ -311,17 +311,19 @@ namespace ManagementSystem.LeaveRepositorys
             //var userLeave = await _userManager.Users.Where(x => x.Id == AbpSession.UserId).FirstOrDefaultAsync();
 
             var assignedLeaveBalances = await _leaveQuotaRepository.GetAllListAsync(v => v.Id == userLeave.LeaveQuotaId);
-            int year = DateTime.Now.Year;
-            DateTime firstDay = new DateTime(year, 1, 1);
-            DateTime lastDay = new DateTime(year, 12, 31);
+
+
+            DateTime firstDay = new DateTime(DateTime.Today.Year, 1, 1);
+            DateTime firstDayOfNextYear = new DateTime(DateTime.Today.Year + 1, 1, 1);
+            DateTime lastDay = firstDayOfNextYear.AddDays(-1);
             int totalDaysInYear = (lastDay - firstDay).Days + 1;
             DateTime joinUser = userLeave.JoiningDate;
-            int remaingDays = (lastDay - joinUser).Days;
+            int remaingDays = (lastDay - joinUser).Days + 1;
             var getLeave = new LeaveTypeBalanceDto();
 
             foreach (var leaveQuota in assignedLeaveBalances)
             {
-                if (leaveQuota.EmployeeStatus!=null)
+                if (leaveQuota.EmployeeStatus != null)
                 {
                     var casualLeaves = allLeaves.Where(leave => leave.LeaveCategoryId == 1);
                     var annualLeaves = allLeaves.Where(leave => leave.LeaveCategoryId == 2);
@@ -355,8 +357,73 @@ namespace ManagementSystem.LeaveRepositorys
             }
             return getLeave;
         }
+        public async Task<UserDetailDto> UserDashboard()
+        {
+            var allLeaves = await _leaveRepository.GetAllListAsync(x => x.UserId == AbpSession.UserId);
+            var userdetail = await _userManager.Users.Where(x => x.Id == AbpSession.UserId).FirstOrDefaultAsync();
+
+            var assignedLeaveBalances = await _leaveQuotaRepository.FirstOrDefaultAsync(v => v.Id == userdetail.LeaveQuotaId);
 
 
+            DateTime firstDay = new DateTime(DateTime.Today.Year, 1, 1);
+            DateTime firstDayOfNextYear = new DateTime(DateTime.Today.Year + 1, 1, 1);
+            DateTime lastDay = firstDayOfNextYear.AddDays(-1);
+            int totalDaysInYear = (lastDay - firstDay).Days + 1;
+            DateTime joinUser = userdetail.JoiningDate;
+            int remaingDays = (lastDay - joinUser).Days + 1;
+            var getUserdetail = new UserDetailDto();
+
+           
+                if (assignedLeaveBalances.EmployeeStatus != null)
+                {
+                    var casualLeaves = allLeaves.Where(leave => leave.LeaveCategoryId == 1);
+                    var annualLeaves = allLeaves.Where(leave => leave.LeaveCategoryId == 2);
+                    var sickLeaves = allLeaves.Where(leave => leave.LeaveCategoryId == 3);
+
+
+                    decimal totalCasualLeaveBalance = casualLeaves.Sum(leave => leave.LeaveBalance ?? 0);
+                    decimal totalAnnualLeaveBalance = annualLeaves.Sum(leave => leave.LeaveBalance ?? 0);
+                    decimal totalSickLeaveBalance = sickLeaves.Sum(leave => leave.LeaveBalance ?? 0);
+                    decimal totalAvailedleaveBalance = totalCasualLeaveBalance + totalSickLeaveBalance + totalAnnualLeaveBalance;
+
+                    decimal casualLeaveAsignUser = (assignedLeaveBalances.Casual / totalDaysInYear) * remaingDays;
+                    decimal AnnualLeaveAsignUser = (assignedLeaveBalances.Annual / totalDaysInYear) * remaingDays;
+                    decimal SickLeaveAsignUser = (assignedLeaveBalances.Sick / totalDaysInYear) * remaingDays;
+                    decimal totalAvailableBalance = casualLeaveAsignUser + AnnualLeaveAsignUser + SickLeaveAsignUser;
+                //Percentage Used Leave
+                    decimal usedCasualLeavePercentage = (totalCasualLeaveBalance / casualLeaveAsignUser) * 100;
+                    decimal usedAnnualLeavePercentage = (totalCasualLeaveBalance / AnnualLeaveAsignUser) * 100;
+                    decimal usedSickLeavePercentage = (totalCasualLeaveBalance / SickLeaveAsignUser) * 100;
+                //Percentage remaining  Used Leave
+                    decimal remainingCasualLeave = casualLeaveAsignUser - totalCasualLeaveBalance;
+                    decimal remainingAnnualLeave = AnnualLeaveAsignUser - totalAnnualLeaveBalance;
+                    decimal remainingSickLeave = SickLeaveAsignUser - totalSickLeaveBalance;
+                    decimal notusedCasualLeavePercentage = (remainingCasualLeave / casualLeaveAsignUser) * 100;
+                    decimal notusedAnnualLeavePercentage = (remainingAnnualLeave / AnnualLeaveAsignUser) * 100;
+                    decimal notusedSickLeavePercentage = (remainingSickLeave / SickLeaveAsignUser) * 100;
+             
+
+                   getUserdetail.CasualLeaveAsign = casualLeaveAsignUser;
+                    getUserdetail.AnnualLeaveAsign = AnnualLeaveAsignUser;
+                    getUserdetail.SickLeaveAsign = SickLeaveAsignUser;
+                    getUserdetail.CasualLeaveBalance = totalCasualLeaveBalance;
+                    getUserdetail.AnnualLeaveBalance = totalAnnualLeaveBalance;
+                    getUserdetail.SickLeaveBalance = totalSickLeaveBalance;
+                    getUserdetail.TotalAvailableLeaveBalance = totalAvailableBalance;
+                    getUserdetail.TotalAvailedLeaveBalance = totalAvailedleaveBalance;
+                    getUserdetail.EmployeeName = userdetail.UserName;
+                    getUserdetail.Email = userdetail.EmailAddress;
+                    getUserdetail.EmployeeStatus = assignedLeaveBalances.EmployeeStatus;
+                    getUserdetail.PercentageCasualUsed = usedCasualLeavePercentage;
+                    getUserdetail.PercentageAnnualUsed = usedAnnualLeavePercentage;
+                    getUserdetail.PercentageSickUsed = usedSickLeavePercentage;
+                    getUserdetail.JoiningDate = userdetail.JoiningDate;
+
+            }
+
+
+            return getUserdetail;
+        }
     }
 }
 

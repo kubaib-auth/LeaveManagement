@@ -17,6 +17,7 @@ namespace ManagementSystem.LeaveRepositorys.Dtos
         public decimal SickLeaveAsign { get; set; }
         public decimal TotalAvailableLeaveBalance { get; set; }
         public decimal TotalAvailedLeaveBalance { get; set; }
+        
 
     }
 }

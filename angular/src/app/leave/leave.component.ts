@@ -7,6 +7,7 @@ import {  EmployeeDto, LeaveAppServicesServiceProxy, LeaveDto,  } from '@shared/
 import { LazyLoadEvent } from 'primeng/api';
 import { ApproveOrRejectedleavComponent } from './approve-or-rejectedleav.component';
 import { PermissionCheckerService } from 'abp-ng2-module';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-leave',
@@ -47,7 +48,8 @@ b:any;
       public bsModalRef: BsModalRef,
       private _modalService: BsModalService,
       private _leaveService:LeaveAppServicesServiceProxy,
-      private _permissionChecker: PermissionCheckerService
+      private _permissionChecker: PermissionCheckerService,
+      private _route:Router
     ) {
       super(injector);
     }
@@ -55,6 +57,7 @@ b:any;
     ngOnInit() { 
       this.getLeaveAll();
       this.getuser();
+      //this.reloadCurrentRoute() 
     } 
    
      getLeaveAll(event?: LazyLoadEvent){ 
@@ -87,7 +90,13 @@ b:any;
         });
        
      }
-
+    //  reloadCurrentRoute() {
+    //   debugger
+    //   let currentUrl = this._route.url;
+    //   this._route.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+    //       this._route.navigate([currentUrl]);
+    //   });
+  //}
     createUser(id?:number):void{
            this.checked1=true;
            const createOrEditLeaveDialog:BsModalRef = this._modalService.show(

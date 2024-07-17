@@ -122,21 +122,13 @@ export class CreateOrEditLeaveComponent extends AppComponentBase implements OnIn
     }
     return this.daysCalculate;
    }
-  // onCategorySelect(event) {  
-  //   debugger
-  //   const selectedCategoryId = event.value;
-  //   console.log('Selected leave Category ID:', selectedCategoryId);
-  // }
+  
   getCurrentUser(){
      this._leaveService.getCurrentUser().subscribe((response)=>{
       this.currentUser= response;
      });
   }
-  // onCatogorySelected(event: any){
-  //   if (event && event.id) {
-  //     this.selectedleaveCategory = event.id;
-  //   }
-  // }
+  
   getEmployee(){
     this._leaveService.getAllUsers().subscribe((response)=>{
     this.user= response;

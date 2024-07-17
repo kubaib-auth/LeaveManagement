@@ -795,6 +795,57 @@ export class LeaveAppServicesServiceProxy {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @return Success
+     */
+    userDashboard(): Observable<UserDetailDto> {
+        let url_ = this.baseUrl + "/api/services/app/LeaveAppServices/UserDashboard";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUserDashboard(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUserDashboard(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<UserDetailDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<UserDetailDto>;
+        }));
+    }
+
+    protected processUserDashboard(response: HttpResponseBase): Observable<UserDetailDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = UserDetailDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 @Injectable()
@@ -857,6 +908,168 @@ export class NotificationAppServicesServiceProxy {
                 result200 = <any>null;
             }
             return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getAllUserNotifications(): Observable<UserNotificationDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/NotificationAppServices/GetAllUserNotifications";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllUserNotifications(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllUserNotifications(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<UserNotificationDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<UserNotificationDto[]>;
+        }));
+    }
+
+    protected processGetAllUserNotifications(response: HttpResponseBase): Observable<UserNotificationDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(UserNotificationDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param userNotificationId (optional) 
+     * @return Success
+     */
+    viewNotification(userNotificationId: string | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/NotificationAppServices/ViewNotification?";
+        if (userNotificationId === null)
+            throw new Error("The parameter 'userNotificationId' cannot be null.");
+        else if (userNotificationId !== undefined)
+            url_ += "userNotificationId=" + encodeURIComponent("" + userNotificationId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processViewNotification(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processViewNotification(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processViewNotification(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param userNotificationId (optional) 
+     * @return Success
+     */
+    delete(userNotificationId: string | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/NotificationAppServices/Delete?";
+        if (userNotificationId === null)
+            throw new Error("The parameter 'userNotificationId' cannot be null.");
+        else if (userNotificationId !== undefined)
+            url_ += "userNotificationId=" + encodeURIComponent("" + userNotificationId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -5197,6 +5410,141 @@ export interface IUserClaim {
     userId: number;
     claimType: string | undefined;
     claimValue: string | undefined;
+}
+
+export class UserDetailDto implements IUserDetailDto {
+    casualLeaveBalance: number;
+    annualLeaveBalance: number;
+    sickLeaveBalance: number;
+    casualLeaveAsign: number;
+    annualLeaveAsign: number;
+    sickLeaveAsign: number;
+    totalAvailableLeaveBalance: number;
+    totalAvailedLeaveBalance: number;
+    employeeName: string | undefined;
+    fatherName: string | undefined;
+    reportingTo: string | undefined;
+    email: string | undefined;
+    cnic: string | undefined;
+    mobileNo: string | undefined;
+    referenceMobileNo: string | undefined;
+    department: string | undefined;
+    designation: string | undefined;
+    address: string | undefined;
+    permanentAddress: string | undefined;
+    employeeStatus: string | undefined;
+    joiningDate: moment.Moment;
+    percentageCasualUsed: number;
+    percentageAnnualUsed: number;
+    percentageSickUsed: number;
+
+    constructor(data?: IUserDetailDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.casualLeaveBalance = _data["casualLeaveBalance"];
+            this.annualLeaveBalance = _data["annualLeaveBalance"];
+            this.sickLeaveBalance = _data["sickLeaveBalance"];
+            this.casualLeaveAsign = _data["casualLeaveAsign"];
+            this.annualLeaveAsign = _data["annualLeaveAsign"];
+            this.sickLeaveAsign = _data["sickLeaveAsign"];
+            this.totalAvailableLeaveBalance = _data["totalAvailableLeaveBalance"];
+            this.totalAvailedLeaveBalance = _data["totalAvailedLeaveBalance"];
+            this.employeeName = _data["employeeName"];
+            this.fatherName = _data["fatherName"];
+            this.reportingTo = _data["reportingTo"];
+            this.email = _data["email"];
+            this.cnic = _data["cnic"];
+            this.mobileNo = _data["mobileNo"];
+            this.referenceMobileNo = _data["referenceMobileNo"];
+            this.department = _data["department"];
+            this.designation = _data["designation"];
+            this.address = _data["address"];
+            this.permanentAddress = _data["permanentAddress"];
+            this.employeeStatus = _data["employeeStatus"];
+            this.joiningDate = _data["joiningDate"] ? moment(_data["joiningDate"].toString()) : <any>undefined;
+            this.percentageCasualUsed = _data["percentageCasualUsed"];
+            this.percentageAnnualUsed = _data["percentageAnnualUsed"];
+            this.percentageSickUsed = _data["percentageSickUsed"];
+        }
+    }
+
+    static fromJS(data: any): UserDetailDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserDetailDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["casualLeaveBalance"] = this.casualLeaveBalance;
+        data["annualLeaveBalance"] = this.annualLeaveBalance;
+        data["sickLeaveBalance"] = this.sickLeaveBalance;
+        data["casualLeaveAsign"] = this.casualLeaveAsign;
+        data["annualLeaveAsign"] = this.annualLeaveAsign;
+        data["sickLeaveAsign"] = this.sickLeaveAsign;
+        data["totalAvailableLeaveBalance"] = this.totalAvailableLeaveBalance;
+        data["totalAvailedLeaveBalance"] = this.totalAvailedLeaveBalance;
+        data["employeeName"] = this.employeeName;
+        data["fatherName"] = this.fatherName;
+        data["reportingTo"] = this.reportingTo;
+        data["email"] = this.email;
+        data["cnic"] = this.cnic;
+        data["mobileNo"] = this.mobileNo;
+        data["referenceMobileNo"] = this.referenceMobileNo;
+        data["department"] = this.department;
+        data["designation"] = this.designation;
+        data["address"] = this.address;
+        data["permanentAddress"] = this.permanentAddress;
+        data["employeeStatus"] = this.employeeStatus;
+        data["joiningDate"] = this.joiningDate ? this.joiningDate.toISOString() : <any>undefined;
+        data["percentageCasualUsed"] = this.percentageCasualUsed;
+        data["percentageAnnualUsed"] = this.percentageAnnualUsed;
+        data["percentageSickUsed"] = this.percentageSickUsed;
+        return data;
+    }
+
+    clone(): UserDetailDto {
+        const json = this.toJSON();
+        let result = new UserDetailDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUserDetailDto {
+    casualLeaveBalance: number;
+    annualLeaveBalance: number;
+    sickLeaveBalance: number;
+    casualLeaveAsign: number;
+    annualLeaveAsign: number;
+    sickLeaveAsign: number;
+    totalAvailableLeaveBalance: number;
+    totalAvailedLeaveBalance: number;
+    employeeName: string | undefined;
+    fatherName: string | undefined;
+    reportingTo: string | undefined;
+    email: string | undefined;
+    cnic: string | undefined;
+    mobileNo: string | undefined;
+    referenceMobileNo: string | undefined;
+    department: string | undefined;
+    designation: string | undefined;
+    address: string | undefined;
+    permanentAddress: string | undefined;
+    employeeStatus: string | undefined;
+    joiningDate: moment.Moment;
+    percentageCasualUsed: number;
+    percentageAnnualUsed: number;
+    percentageSickUsed: number;
 }
 
 export class UserDto implements IUserDto {
