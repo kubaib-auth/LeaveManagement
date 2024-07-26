@@ -1,0 +1,41 @@
+
+
+
+
+
+
+
+<form class="form-horizontal"    autocomplete="off" #createOrEditLeaveForm="ngForm" (ngSubmit)="save()">
+    <abp-modal-header [title]="'CreateLeave' | localize" (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+   
+    <div class="modal-body">
+      <div class="row">
+        <!-- {{leave | json}} -->
+       
+       
+        <div class="col-sm-6">
+          <div class="mb-3">
+            <label class="form-label"> {{ "Leave Cateory" | localize }}</label>
+            <br>
+            <input
+            type="text"
+            class="form-control"
+            name="leaveCateory.id"
+            id="leaveCateory.id"         
+            minlength="2"
+            maxlength="64"
+            style="height: calc(2.75rem + 2px) !important;"
+            required 
+            [(ngModel)]="leaveCateory.leaveType"
+            #LeaveTypeModel="ngModel"
+            #LeaveTypeEl
+          />
+          </div>
+        </div>
+       
+      </div>
+    </div>
+    <abp-modal-footer [cancelDisabled]="saving" [saveDisabled]="!createOrEditLeaveForm.form.valid || saving"
+      (onCancelClick)="bsModalRef.hide()"></abp-modal-footer>
+  </form>
+  

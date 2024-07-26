@@ -6,6 +6,7 @@ import * as ApiServiceProxies from './service-proxies';
 
 @NgModule({
     providers: [
+        ApiServiceProxies.LeaveCateoryAppServicesServiceProxy,
         ApiServiceProxies.LeaveAppServicesServiceProxy,
         ApiServiceProxies.NotificationAppServicesServiceProxy,
         ApiServiceProxies.RoleServiceProxy,

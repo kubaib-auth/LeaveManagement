@@ -65,6 +65,8 @@ import { NotificationComponent } from './layout/notification.component';
 import { UserDashboardComponent } from './leave/user-dashboard.component';
 import { ChartModule } from 'primeng/chart';
 import { ViewNotificationComponent } from './layout/view-notification.component';
+import { LeavecateoryComponent } from './leave/leavecateory.component';
+import { CreateOrEditleaveCateoryComponent } from './leave/create-or-editleave-cateory.component';
 
 
 @NgModule({
@@ -102,7 +104,9 @@ import { ViewNotificationComponent } from './layout/view-notification.component'
         PermissionModelComponent,
         NotificationComponent,
         UserDashboardComponent,
-        ViewNotificationComponent
+        ViewNotificationComponent,
+        LeavecateoryComponent,
+        CreateOrEditleaveCateoryComponent
     ],
     imports: [
         CommonModule,

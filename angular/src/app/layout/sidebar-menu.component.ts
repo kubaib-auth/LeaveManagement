@@ -65,6 +65,12 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
                 'fas fa-users',
                 'Pages.Users'
             ),
+            new MenuItem(
+                this.l('Leavecateory'),
+                '/app/leavecateory',
+                'fas fa-users',
+                ''
+            ),
             new MenuItem('Manage Leave', '', 'fas fa-dot-circle', '', [
                 new MenuItem(
                     this.l('Leave'),
