@@ -175,38 +175,38 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <button
+                                    <!-- <button
                                             type="button"
                                             class="btn btn-sm bg-secondary"
-                                            (click)="editUser(user)"
-                                    >
-                                        <i class="fas fa-pencil-alt"></i>
-                                        {{ "Edit" | localize }}
-                                    </button>
-                                    <button
+                                           
+                                    > -->
+                                        <i  (click)="editUser(user)"   class=" mx-2 bprimary fas fa-pencil-alt"></i>
+                                        <!-- {{ "Edit" | localize }}
+                                    </button> -->
+                                    <!-- <button
                                             type="button"
                                             class="btn btn-sm bg-secondary"
-                                            (click)="permissionUser(user)"
-                                    >
-                                        <i class="fas fa-pencil-alt"></i>
-                                        {{ "Permissions" | localize }}
-                                    </button>
-                                    <button
+                                            
+                                    > -->
+                                      <span (click)="permissionUser(user)"><i  class='mx-2 far fa-check-circle' ></i></span>
+<!--                                    <span></span>     
+                                <--    </button> -->
+                                    <!-- <button
                                             type="button"
                                             class="btn btn-sm bg-danger mx-2"
-                                            (click)="delete(user)"
-                                    >
-                                        <i class="fas fa-trash"></i>
-                                        {{ "Delete" | localize }}
-                                    </button>
-                                    <button
+                                            
+                                    > -->
+                                        <i (click)="delete(user)" class="redd mx-2 fas fa-trash"></i>
+                                        <!-- {{ "Delete" | localize }} -->
+                                    <!-- </button> -->
+                                    <!-- <button
                                             type="button"
                                             class="btn btn-sm bg-secondary"
-                                            (click)="resetPassword(user)"
-                                    >
-                                        <i class="fas fa-lock"></i>
-                                        {{ "ResetPassword" | localize }}
-                                    </button>
+                                           
+                                    > -->
+                                        <i  (click)="resetPassword(user)" class="succ mx- fas fa-lock"></i>
+                                        <!-- {{ "ResetPassword" | localize }} -->
+                                    <!-- </button> -->
                                 </td>
                             </tr>
                             </tbody>

@@ -33,14 +33,13 @@ implements OnInit{
   ngOnInit(): void {
    debugger
     this.setInitialPermissionsStatus();
-    // this._roleService
-    //   .getRoleForEdit(this.id)
-    //   .subscribe((result: GetRoleForEditOutput) => {
-    //     this.role = result.role;
-    //     this.permissions = result.permissions;
-    //     this.grantedPermissionNames = result.grantedPermissionNames;
-    //     this.setInitialPermissionsStatus();
-    //   });
+    this._roleService
+      .getRoleForEdit(this.id)
+      .subscribe((result: GetRoleForEditOutput) => {
+        this.role = result.role;
+        this.permissions = result.permissions;
+        this.grantedPermissionNames = result.grantedPermissionNames;
+      });
   }
 save() {
   const sdsd = new UserDto();
