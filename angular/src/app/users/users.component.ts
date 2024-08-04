@@ -31,7 +31,7 @@ export class UsersComponent extends PagedListingComponentBase<UserDto> {
   keyword = '';
   isActive: boolean | null;
   advancedFiltersVisible = false;
-
+  // id:number;
   constructor(
     injector: Injector,
     private _userService: UserServiceProxy,
@@ -48,6 +48,7 @@ export class UsersComponent extends PagedListingComponentBase<UserDto> {
     this.showCreateOrEditUserDialog(user.id);
   }
   permissionUser(user: UserDto): void {
+    debugger
     this.showPermissionUserDialog(user.id);
   }
 
@@ -112,6 +113,7 @@ export class UsersComponent extends PagedListingComponentBase<UserDto> {
   }
 
   private showCreateOrEditUserDialog(id?: number): void {
+    debugger
     let createOrEditUserDialog: BsModalRef;
     if (!id) {
       createOrEditUserDialog = this._modalService.show(
@@ -136,17 +138,27 @@ export class UsersComponent extends PagedListingComponentBase<UserDto> {
       this.refresh();
     });
   }
-  private showPermissionUserDialog(id?: number): void {
+  private showPermissionUserDialog(id?:number): void {
     debugger
     let permissionUserDialog: BsModalRef;
-    if (id) {
+    if (!id) {
       permissionUserDialog = this._modalService.show(
         PermissionModelComponent,
         {
           class: 'modal-lg',
         }
       );
-    } 
+    } else {
+      permissionUserDialog = this._modalService.show(
+        PermissionModelComponent,
+        {
+          class: 'modal-lg',
+          initialState: {
+            id: id,
+          },
+        }
+      );
+    }
 
     permissionUserDialog.content.onSave.subscribe(() => {
       this.refresh();

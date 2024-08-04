@@ -910,6 +910,118 @@ export class LeaveCateoryAppServicesServiceProxy {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getRoleForEdit(id: number | undefined): Observable<GetRoleForEditOutput> {
+        let url_ = this.baseUrl + "/api/services/app/LeaveCateoryAppServices/GetRoleForEdit?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetRoleForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetRoleForEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetRoleForEditOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetRoleForEditOutput>;
+        }));
+    }
+
+    protected processGetRoleForEdit(response: HttpResponseBase): Observable<GetRoleForEditOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetRoleForEditOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getAllPermissionsPC(id: number | undefined): Observable<PermissionDtoListResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/LeaveCateoryAppServices/GetAllPermissionsPC?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllPermissionsPC(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllPermissionsPC(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PermissionDtoListResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PermissionDtoListResultDto>;
+        }));
+    }
+
+    protected processGetAllPermissionsPC(response: HttpResponseBase): Observable<PermissionDtoListResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PermissionDtoListResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 @Injectable()
@@ -4220,7 +4332,9 @@ export class PermissionDto implements IPermissionDto {
     id: number;
     name: string | undefined;
     displayName: string | undefined;
-    description: string | undefined;
+    parentName: string | undefined;
+    children: PermissionDto[] | undefined;
+    isGranted: boolean;
 
     constructor(data?: IPermissionDto) {
         if (data) {
@@ -4236,7 +4350,13 @@ export class PermissionDto implements IPermissionDto {
             this.id = _data["id"];
             this.name = _data["name"];
             this.displayName = _data["displayName"];
-            this.description = _data["description"];
+            this.parentName = _data["parentName"];
+            if (Array.isArray(_data["children"])) {
+                this.children = [] as any;
+                for (let item of _data["children"])
+                    this.children.push(PermissionDto.fromJS(item));
+            }
+            this.isGranted = _data["isGranted"];
         }
     }
 
@@ -4252,7 +4372,13 @@ export class PermissionDto implements IPermissionDto {
         data["id"] = this.id;
         data["name"] = this.name;
         data["displayName"] = this.displayName;
-        data["description"] = this.description;
+        data["parentName"] = this.parentName;
+        if (Array.isArray(this.children)) {
+            data["children"] = [];
+            for (let item of this.children)
+                data["children"].push(item.toJSON());
+        }
+        data["isGranted"] = this.isGranted;
         return data;
     }
 
@@ -4268,7 +4394,9 @@ export interface IPermissionDto {
     id: number;
     name: string | undefined;
     displayName: string | undefined;
-    description: string | undefined;
+    parentName: string | undefined;
+    children: PermissionDto[] | undefined;
+    isGranted: boolean;
 }
 
 export class PermissionDtoListResultDto implements IPermissionDtoListResultDto {

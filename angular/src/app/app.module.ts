@@ -67,7 +67,7 @@ import { ChartModule } from 'primeng/chart';
 import { ViewNotificationComponent } from './layout/view-notification.component';
 import { LeavecateoryComponent } from './leave/leavecateory.component';
 import { CreateOrEditleaveCateoryComponent } from './leave/create-or-editleave-cateory.component';
-
+import {TreeModule} from 'primeng/tree';
 
 @NgModule({
     declarations: [
@@ -135,6 +135,7 @@ import { CreateOrEditleaveCateoryComponent } from './leave/create-or-editleave-c
         RadioButtonModule,
         InputTextareaModule,
         InputSwitchModule,
+        TreeModule,
        // ChartModule,
        // LeaveModule
         

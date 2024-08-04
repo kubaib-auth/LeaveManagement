@@ -1,4 +1,4 @@
-<form
+ <form
   class="form-horizontal"
   autocomplete="off"
   #createUserModal="ngForm"
@@ -9,30 +9,19 @@
     (onCloseClick)="bsModalRef.hide()"
   ></abp-modal-header>
   <div class="modal-body">
-    <tabset>
-     
-      <tab [heading]="'Permissions' | localize" class="pt-3 px-2">
+   
         <div class="form-group row mb-0">
-          <ng-container *ngFor="let permission of permissions; let i = index">
-            <div class="col-md-6">
-              <div class="custom-control custom-checkbox">
-                <input
-                  type="checkbox"
-                  class="custom-control-input"
-                  [id]="'permission_' + i"
-                  [checked]="isPermissionChecked(permission.name)"
-                  [disabled]="sdsd.isStatic"
-                  (change)="onPermissionChange(permission, $event)"
-                />
-                <label class="custom-control-label" [for]="'permission_' + i">
-                  {{ permission.displayName }}
-                </label>
-              </div>
-            </div>
-          </ng-container>
+          <p-tree 
+          [value]="files3" 
+          selectionMode="checkbox" 
+          [(selection)]="selectedFiles2"
+          (onNodeSelect)="onNodeSelect($event)">
+          <ng-template let-node pTemplate="default">
+            <span>{{node.label}}</span>
+        </ng-template>
+        </p-tree>
         </div>
-      </tab>
-    </tabset>
+      
   </div>
   <abp-modal-footer
     [cancelDisabled]="saving"
@@ -40,4 +29,4 @@
     (onCancelClick)="bsModalRef.hide()"
   ></abp-modal-footer>
 </form>
-<!-- [saveDisabled]="!editUserModal.form.valid || saving || isFormEmpty(editUserModal)" -->
+
