@@ -1,4 +1,4 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/core';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/app-component-base';
 import { LeaveAppServicesServiceProxy } from '@shared/service-proxies/service-proxies';
@@ -13,6 +13,8 @@ export class UserDashboardComponent extends AppComponentBase implements OnInit {
  userDetail:any;
   data: any;
   options: any;
+  @ViewChild('fileInput', { static: false }) fileInput!: ElementRef;
+
   constructor(
     injector: Injector,       
     private _leaveService:LeaveAppServicesServiceProxy,
@@ -52,4 +54,20 @@ getDashboard(){
         this.userDetail= response;
     })
  }
+ triggerFileInput() {
+  debugger
+  this.fileInput.nativeElement.click();  
+}
+
+onFileSelected(event: any) {
+  const file: File = event.target.files[0];
+  if (file) {
+    this.uploadFile(file);  // Handle file upload
+  }
+}
+
+uploadFile(file: File) {
+  // Implement your file upload logic here (e.g., using a service)
+  console.log('Uploading file:', file.name);
+}
 }

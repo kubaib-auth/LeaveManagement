@@ -419,9 +419,9 @@ namespace ManagementSystem.LeaveRepositorys
                 decimal sickLeaveAsignUser = (assignedLeaveBalances.Sick / totalDaysInYear) * effectiveDays;
                 decimal totalAvailableBalance = casualLeaveAsignUser + annualLeaveAsignUser + sickLeaveAsignUser;
                 //Percentage Used Leave
-                decimal usedCasualLeavePercentage = (totalCasualLeaveBalance / casualLeaveAsignUser) * 100;
-                    decimal usedAnnualLeavePercentage = (totalCasualLeaveBalance / annualLeaveAsignUser) * 100;
-                    decimal usedSickLeavePercentage = (totalCasualLeaveBalance / sickLeaveAsignUser) * 100;
+                     decimal usedCasualLeavePercentage = (totalCasualLeaveBalance / casualLeaveAsignUser) * 100;
+                    decimal usedAnnualLeavePercentage = (totalAnnualLeaveBalance / annualLeaveAsignUser) * 100;
+                    decimal usedSickLeavePercentage = (totalSickLeaveBalance / sickLeaveAsignUser) * 100;
                 //Percentage remaining  Used Leave
                     decimal remainingCasualLeave = casualLeaveAsignUser - totalCasualLeaveBalance;
                     decimal remainingAnnualLeave = annualLeaveAsignUser - totalAnnualLeaveBalance;

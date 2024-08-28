@@ -6,7 +6,19 @@
         <div class="row">
       <div class="col-lg-4 col-md-6 mb-2">
         <div class="card mb-2 h-100">
+          <div class="text-right pe-2 pr-2">
+            <div>
+              <!-- Icon for triggering the upload -->
+              <i class="fa fa-upload" (click)="triggerFileInput()"></i> <!-- Replace with your preferred icon -->
+            
+              <!-- Hidden file input -->
+              <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none;" />
+            </div>
+            
+
+          </div>
           <div class="img-top">
+
             <img src="https://source.unsplash.com/E4c21RvXpgQ" class="card-img-top img-fluid animate" alt="">
             <a href="#">
               <span></span>
@@ -78,7 +90,7 @@
             </div>
             </div>
           </div>
-        
+          <!-- {{userDetail | json}} -->
       </div>
     </div>
     <div class="row">
@@ -105,11 +117,11 @@
                 <div class="progress">
                   <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" 
                   role="progressbar"
-                  [style.width.%]="userDetail.usedSickLeavePercentage" 
+                  [style.width.%]="userDetail.percentageSickUsed" 
                   aria-valuenow="userDetail.usedSickLeavePercentage" 
-                  [attr.title]="'Sick Leave Usage: ' + userDetail.usedSickLeavePercentage  + '%'"
+                  [attr.title]="'Sick Leave Usage: ' + userDetail.percentageSickUsed  + '%'"
                    aria-valuemin="0" 
-                   aria-valuemax="100">{{userDetail.usedSickLeavePercentage |  number: '1.0-0'}}</div>
+                   aria-valuemax="100">{{userDetail.percentageSickUsed |  number: '1.0-0'}}</div>
                 </div>
                    </div>
                    <span class="pbar-mr-2">Annual</span>
@@ -117,11 +129,11 @@
                 <div class="progress">
                   <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" 
                   role="progressbar" 
-                  [style.width.%]="userDetail.usedAnnualLeavePercentage" 
+                  [style.width.%]="userDetail.percentageAnnualUsed" 
                   aria-valuenow="userDetail.usedAnnualLeavePercentage" 
-                  [attr.title]="'Annual Leave Usage: ' + userDetail.usedAnnualLeavePercentage + '%'"
+                  [attr.title]="'Annual Leave Usage: ' + userDetail.percentageAnnualUsed + '%'"
                   aria-valuemin="0" 
-                  aria-valuemax="100">{{userDetail.usedAnnualLeavePercentage |  number: '1.0-0'}}</div>
+                  aria-valuemax="100">{{userDetail.percentageAnnualUsed |  number: '1.0-0'}}</div>
                 </div>
                 </div>
                 
