@@ -76,6 +76,24 @@ namespace ManagementSystem.LeaveCategoryRepository
 
             await _leaveCategoryRepository.UpdateAsync(leaveCateoryToUpdate);
         }
+        //async Task<PagedResultDto<LeaveCategory>> LeaveCategory(GetAllLeaveInput input)
+        public async Task<PagedResultDto<LeaveCategoryDto>> LeaveCategory(GetAllLeaveCateoryInput input)
+        {
+            var categories = await _leaveCategoryRepository.GetAllListAsync();
+
+            var results = categories.Select(o => new LeaveCategoryDto
+            {
+                Id = o.Id,
+                LeaveType = o.LeaveType
+            }).ToList();
+
+            return new PagedResultDto<LeaveCategoryDto>
+            {
+                Items = results,
+                TotalCount = results.Count
+            };
+        }
+
         public async Task<GetRoleForEditOutput> GetRoleForEdit(EntityDto input)
         {
             var permissions = PermissionManager.GetAllPermissions();
